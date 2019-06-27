@@ -7,7 +7,6 @@
   <packaging>pom</packaging>
   <modules>
     <module>com-dx-common</module>
-    <module>com-dx-pro-bean</module>
     <module>com-dx-bean</module>
     <module>com-dx-dao</module>
     <module>com-dx-service</module>
@@ -19,4 +18,47 @@
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
     <java.version>1.8</java.version>
   </properties>
+  
+  <parent>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>1.5.21.RELEASE</version>
+  </parent>
+  
+  <dependencies>
+  	<dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+    </dependency>
+    
+    <dependency>
+	<groupId>org.springframework.boot</groupId>    
+		<artifactId>spring-boot-starter-tomcat</artifactId>    
+		<scope>provided</scope>
+	</dependency>  
+	
+	<dependency>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-jdbc</artifactId>
+    </dependency>
+    
+<!--     <dependency>
+       <groupId>com.oracle</groupId>
+       <artifactId>ojdbc14</artifactId>
+       <version>10.2.0.3.0</version>
+    </dependency> -->
+        
+  </dependencies>
+  
+  	
+  
+  <build>
+        <plugins>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+            </plugin>
+        </plugins>
+    </build>
+  
 </project>
