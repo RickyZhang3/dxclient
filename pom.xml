@@ -17,6 +17,7 @@
   	<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
     <java.version>1.8</java.version>
+    <swagger.version>2.6.1</swagger.version>
   </properties>
   
   <parent>
@@ -47,17 +48,34 @@
     	<artifactId>spring-boot-starter-jdbc</artifactId>
 	</dependency>
 	
+	<!-- spring boot集成Swagger2 -->
+        <dependency>
+            <groupId>io.springfox</groupId>
+            <artifactId>springfox-swagger2</artifactId>
+            <version>${swagger.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>io.springfox</groupId>
+            <artifactId>springfox-swagger-ui</artifactId>
+            <version>${swagger.version}</version>
+        </dependency>
+	
 	<dependency>
     	<groupId>commons-dbcp</groupId>
     	<artifactId>commons-dbcp</artifactId>
-    	<version>1.4</version>
 	</dependency>
+	
+	<dependency>
+         <groupId>mysql</groupId>
+         <artifactId>mysql-connector-java</artifactId>
+         <scope>runtime</scope>
+    </dependency>
     
-	<dependency> 
+<!-- 	<dependency> 
     	<groupId>com.oracle</groupId>
     	<artifactId>ojdbc14</artifactId>
     	<version>10.2.0.3.0</version>
-	</dependency>
+	</dependency> -->
         
   </dependencies>
   
