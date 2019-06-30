@@ -28,10 +28,18 @@ public class LoginController {
 	@RequestMapping(value="/submit", method = {RequestMethod.GET}, produces = "application/json;charset=UTF-8")
     public RespData<DmpEmployeeBean> submit(@ApiParam(value = "员工账号", required = true) @RequestParam("account") String account,
     												 @ApiParam(value = "密码", required = true) @RequestParam("password") String password) {
-		
-		DmpEmployeeBean dmpEmployeeBean = LoginService.login(account, password);
-		
-		return new RespData<DmpEmployeeBean>(RespData.SUCCESS,RespData.DEFAULT_MSG,dmpEmployeeBean);
-		
+			
+		try {	
+			DmpEmployeeBean dmpEmployeeBean = LoginService.login(account.trim(), password.trim());
+			if(dmpEmployeeBean!=null) {
+				return new RespData<DmpEmployeeBean>(RespData.SUCCESS,RespData.DEFAULT_MSG,dmpEmployeeBean);
+			}else {
+				return new RespData<DmpEmployeeBean>(RespData.FAIL,RespData.LOGIN_ERROR_MSG,null);
+			}
+		}catch (Exception e) {
+			log.error("登录异常：{}",e);
+			e.printStackTrace();
+		}
+		return null;
     }
 }

@@ -22,11 +22,15 @@ public class LoginServiceImpl implements LoginService {
 		
 		StringBuffer sqlBuffer = new StringBuffer();
 		
-		sqlBuffer = sqlBuffer.append("select * from DMP_EMPLOYEE where ACCOUNT = ？")
-					.append(" and PASSORD = ？ and C_FLAG = 0  and rownum<=1 ");
-		
-		DmpEmployeeBean dmpEmployeeBean = jdbcTemplate.queryForObject(sqlBuffer.toString(), new DmpEmployeeBeanMapper(),account, password);
-		return dmpEmployeeBean;
+		sqlBuffer = sqlBuffer.append("select * from DMP_EMPLOYEE where ACCOUNT = ? ")
+					.append(" and PASSORD = ? and C_FLAG = 0  and rownum<=1 ");
+		try {
+			DmpEmployeeBean dmpEmployeeBean = jdbcTemplate.queryForObject(sqlBuffer.toString(), new DmpEmployeeBeanMapper(),new Object[]{account, password});
+			return dmpEmployeeBean;
+		}catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
 	}
 
 }

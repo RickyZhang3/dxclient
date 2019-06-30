@@ -5,6 +5,7 @@ public class RespData<T> {
 	public static final String FAIL = "1";
     public static final String DEFAULT_MSG = "操作成功";
     public static final String ERROR_MSG = "接口异常";
+    public static final String LOGIN_ERROR_MSG = "用户不存在";
     public static final String NOT_LOGIN_ERROR_CODE = "0-0001";
     public static final String NOT_LOGIN_ERROR_MSG = "用户未登录";
     protected String code;
