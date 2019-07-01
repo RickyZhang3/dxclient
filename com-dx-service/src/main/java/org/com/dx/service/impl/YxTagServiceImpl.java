@@ -45,7 +45,7 @@ public class YxTagServiceImpl implements YxTagService {
 		StringBuffer stringBuffer  = new StringBuffer();
 		List<DmpFeedBackInfo> lableBeans = new ArrayList<DmpFeedBackInfo>();
 		
-		stringBuffer.append("select t.feedback_id,t.feedback_name from dmp_feedback_info t where t.feedback_personal=")
+		stringBuffer.append("select t.feedback_id,t.feedback_name from DMP_FEEDBACK_INFO t where t.feedback_personal=")
 					.append(dmpLablePeo)
 					.append(" and t.feedback_flag='Y' order by t.feedback_num");
 		

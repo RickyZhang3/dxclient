@@ -15,6 +15,7 @@ public class DmpEmployeeBeanMapper implements RowMapper<DmpEmployeeBean> {
 		
 		dmpEmployeeBean.setAccount(rs.getString("ACCOUNT"));
 		dmpEmployeeBean.setEmployeeId(rs.getString("EMPLOYEE_ID"));
+		dmpEmployeeBean.setPassword(rs.getString("PASSORD"));
 		
 		return dmpEmployeeBean;
 	}
