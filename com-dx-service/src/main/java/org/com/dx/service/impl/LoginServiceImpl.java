@@ -53,8 +53,12 @@ public class LoginServiceImpl implements LoginService,UserDetailsService {
 		try {           
 			StringBuffer sqlBuffer = new StringBuffer();
 			
-			sqlBuffer = sqlBuffer.append("select * from DMP_EMPLOYEE where ACCOUNT = ? ")
-						.append(" and C_FLAG = 0 limit 1 ");
+			//oracle
+//			sqlBuffer = sqlBuffer.append("select t.* from DMP_EMPLOYEE t, DMP_CHANNEL_LIST n, DMP_ROLE_LIST n1  where where t.CHANNEL_ID = n.CHANNEL_ID and t.ROLE_ID = n1.ROLE_ID and ACCOUNT = ? ")
+//						.append(" and C_FLAG = '0' rownum<=1 ");
+			
+			sqlBuffer = sqlBuffer.append("select t.* from DMP_EMPLOYEE t, DMP_CHANNEL_LIST n, DMP_ROLE_LIST n1  where where t.CHANNEL_ID = n.CHANNEL_ID and t.ROLE_ID = n1.ROLE_ID and ACCOUNT = ? ")
+					.append(" and C_FLAG = '0' limit 1 ");
 			try {
 				DmpEmployeeBean dmpEmployeeBean = jdbcTemplate.queryForObject(sqlBuffer.toString(), new DmpEmployeeBeanMapper(),new Object[]{username});
 				

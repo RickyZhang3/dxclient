@@ -1,12 +1,15 @@
 package org.com.dx.web;
 
 
+import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
 import javax.annotation.Resource;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.com.dx.bean.DmpEmployeeBean;
 import org.com.dx.common.RespData;
@@ -27,8 +30,8 @@ public class LoginController {
 	
 	private static final Logger log = LoggerFactory.getLogger(LoginController.class);
 	
-	@Resource
-	LoginService LoginService;
+//	@Resource
+//	LoginService LoginService;
 	
 //	@ApiOperation("登录接口")
 //	@RequestMapping(value="/submit", method = {RequestMethod.POST}, produces = "application/json;charset=UTF-8")
@@ -50,20 +53,36 @@ public class LoginController {
 //    }
 	
 	@ApiOperation("拦截未登录")
-	@RequestMapping(value="/nologin", method = {RequestMethod.GET}, produces = "application/json;charset=UTF-8")
+	@RequestMapping(value="/nologin", method = {RequestMethod.GET,RequestMethod.POST}, produces = "application/json;charset=UTF-8")
     public RespData<String> nologin() {
-		return new RespData<String>(RespData.NOT_LOGIN_ERROR_CODE,RespData.NOT_LOGIN_ERROR_MSG,"请先登录");
+		return new RespData<String>(RespData.FAIL,RespData.NOT_LOGIN_ERROR_MSG,"请先登录");
     }
 	
 	@ApiOperation("登录成功跳转信息，返回用户cookie")
 	@RequestMapping(value="/success", method = {RequestMethod.POST}, produces = "application/json;charset=UTF-8")
-    public RespData<Map<String,String>> successs(HttpServletRequest httpServletRequest) {
-		Map<String, String> map = new HashMap<String,String>();
-		Cookie[] cookies = httpServletRequest.getCookies();
-		for(Cookie cookie:cookies) {
-			log.info("cookie.getName():{},cookie.getValue():{}",cookie.getName(),cookie.getValue());
-			map.put(cookie.getName(), cookie.getValue());
-		}
-		return new RespData<Map<String,String>>(RespData.SUCCESS,RespData.DEFAULT_MSG,map);
+    public RespData<Map<String,String>> successs(HttpServletRequest httpServletRequest,HttpServletResponse httpServletResponse) {
+		
+		try {
+			Collection<String> cStrings = httpServletResponse.getHeaders("Set-Cookie");
+			Map<String, String> map = new HashMap<String,String>();
+			String[] strings = {};
+			for(String cooString:cStrings) {
+				log.info("cooString:{}",cooString);
+				strings = cooString.split(";");
+				map.put(strings[0].split("=")[0], strings[0].split("=")[1]);
+				
+			}
+			return new RespData<Map<String,String>>(RespData.SUCCESS,RespData.DEFAULT_MSG,map);
+		}catch (Exception e) {
+			e.printStackTrace();
+			return new RespData<Map<String,String>>(RespData.FAIL,RespData.ERROR_MSG,null);
+		} 
+//		Map<String, String> map = new HashMap<String,String>();
+//		Cookie[] cookies = httpServletRequest.getCookies();
+//		for(Cookie cookie:cookies) {
+//			log.info("cookie.getName():{},cookie.getValue():{}",cookie.getName(),cookie.getValue());
+//			map.put(cookie.getName(), cookie.getValue());
+//		}
+		
     }
 }

@@ -33,22 +33,15 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	
 	@Override
     protected void configure(HttpSecurity http) throws Exception {
-        	http.authorizeRequests().antMatchers("/api","/v2/**","/swagger-ui.html","/webjars/**","/swagger-resources/**","/dxlogin/nologin")//"/login/submit","/login/nologin"
+        	http.authorizeRequests().antMatchers("/api","/v2/**","/swagger-ui.html","/webjars/**","/swagger-resources/**","/dxlogin/nologin")
         	.permitAll()
         	.anyRequest().authenticated()
         	.and()
+        	.csrf().disable()
         	.formLogin()
-//        	.loginPage("/dxlogin/nologin")
-//        	.loginPage("/login")
+        	.failureForwardUrl("/dxlogin/nologin")
         	.successForwardUrl("/dxlogin/success")
         	.permitAll();
-//                .antMatchers("/", "/login/submit").permitAll()
-//                .antMatchers("/","/yxTag").permitAll();
-//                .anyRequest().authenticated();
-//                .and()
-//                .formLogin()
-//                .loginPage("/login")
-//                .permitAll();
     }
 	
 	@Bean
