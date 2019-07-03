@@ -19,7 +19,6 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Service;
 
 @Component
 public class LoginServiceImpl implements LoginService,UserDetailsService {
@@ -57,8 +56,8 @@ public class LoginServiceImpl implements LoginService,UserDetailsService {
 //			sqlBuffer = sqlBuffer.append("select t.* from DMP_EMPLOYEE t, DMP_CHANNEL_LIST n, DMP_ROLE_LIST n1  where where t.CHANNEL_ID = n.CHANNEL_ID and t.ROLE_ID = n1.ROLE_ID and ACCOUNT = ? ")
 //						.append(" and C_FLAG = '0' rownum<=1 ");
 			
-			sqlBuffer = sqlBuffer.append("select t.* from DMP_EMPLOYEE t, DMP_CHANNEL_LIST n, DMP_ROLE_LIST n1  where where t.CHANNEL_ID = n.CHANNEL_ID and t.ROLE_ID = n1.ROLE_ID and ACCOUNT = ? ")
-					.append(" and C_FLAG = '0' limit 1 ");
+			sqlBuffer = sqlBuffer.append("select t.* from DMP_EMPLOYEE t, DMP_CHANNEL_LIST n, DMP_ROLE_LIST n1  where t.CHANNEL_ID = n.CHANNEL_ID and t.ROLE_ID = n1.ROLE_ID and t.account = ? ")
+					.append(" and t.C_FLAG = '0' limit 1 ");
 			try {
 				DmpEmployeeBean dmpEmployeeBean = jdbcTemplate.queryForObject(sqlBuffer.toString(), new DmpEmployeeBeanMapper(),new Object[]{username});
 				

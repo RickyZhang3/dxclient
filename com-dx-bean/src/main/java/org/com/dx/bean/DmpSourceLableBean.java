@@ -2,6 +2,8 @@ package org.com.dx.bean;
 
 import java.io.Serializable;
 import java.util.Date;
+
+import io.swagger.annotations.ApiModelProperty;
 /**
  * 营销标签表
  * @author zhangxinghua
@@ -14,8 +16,10 @@ public class DmpSourceLableBean implements Serializable {
 	 */
 	private static final long serialVersionUID = -5476435250373188839L;
 	
+	@ApiModelProperty(name = "dmpLableId", value = "标签id")
 	private String dmpLableId;
 	
+	@ApiModelProperty(name = "dmpLableName", value = "标签名称")
 	private String dmpLableName;
 	
 	private String dmpLableDesc;

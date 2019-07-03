@@ -1,10 +1,14 @@
 package org.com.dx.web;
 
+import org.com.dx.bean.DmpAudioBean;
 import org.com.dx.bean.DmpFeedBackInfo;
 import org.com.dx.bean.DmpFeedBackResultBean;
 import org.com.dx.bean.DmpMarketingDetailBean;
 import org.com.dx.bean.DmpSourceLableBean;
+import org.com.dx.bean.PdBean;
+import org.com.dx.bean.PdResourceBean;
 import org.com.dx.common.RespData;
+import org.com.dx.dao.Page;
 import org.com.dx.service.YxTagService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -33,7 +37,8 @@ public class YxController {
 	
 	@ApiOperation("营销标签查询接口")
 	@RequestMapping(value="/getYxTags", method = {RequestMethod.GET}, produces = "application/json;charset=UTF-8")
-    public RespData<List<DmpSourceLableBean>> getYxTags() {
+    public RespData<Page<DmpSourceLableBean>> getYxTags(@ApiParam(value = "页码", required = true)@RequestParam("pageNo") Integer pageNo,
+    													@ApiParam(value = "每页数据条数", required = true)@RequestParam("pageSize") Integer pageSize) {
 		
 		try {
 			Authentication auth = SecurityContextHolder.getContext().getAuthentication();
@@ -43,9 +48,9 @@ public class YxController {
 			}
 			
 			log.info("auth:{},",auth.getName());
-			List<DmpSourceLableBean> dmpSourceLableBeans =  yxTagService.getTagList(auth.getName());
+			Page<DmpSourceLableBean> page =  yxTagService.getTagList(auth.getName(), pageNo, pageSize);
 			
-			return new RespData<List<DmpSourceLableBean>>(RespData.SUCCESS, RespData.DEFAULT_MSG, dmpSourceLableBeans);
+			return new RespData<Page<DmpSourceLableBean>>(RespData.SUCCESS, RespData.DEFAULT_MSG, page);
 		} catch (Exception e) {
 			log.error("查询异常:{}",e);
 			e.printStackTrace();
@@ -55,15 +60,16 @@ public class YxController {
 	
 	@ApiOperation("营销结果查询接口")
 	@RequestMapping(value="/getYxResult", method = {RequestMethod.GET}, produces = "application/json;charset=UTF-8")
-    public RespData<List<DmpFeedBackInfo>> getYxResult() {
+    public RespData<Page<DmpFeedBackInfo>> getYxResult(@ApiParam(value = "页码", required = true)@RequestParam("pageNo") Integer pageNo,
+			@ApiParam(value = "每页数据条数", required = true)@RequestParam("pageSize") Integer pageSize) {
 		
 		try {
 			Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 			
 			log.info("auth:{}",auth.getName());
-			List<DmpFeedBackInfo> dmpFeedBackInfos =  yxTagService.getYxResultList(auth.getName());
+			Page<DmpFeedBackInfo> dmpFeedBackInfos =  yxTagService.getYxResultList(auth.getName(), pageNo, pageSize);
 			
-			return new RespData<List<DmpFeedBackInfo>>(RespData.SUCCESS, RespData.DEFAULT_MSG, dmpFeedBackInfos);
+			return new RespData<Page<DmpFeedBackInfo>>(RespData.SUCCESS, RespData.DEFAULT_MSG, dmpFeedBackInfos);
 		} catch (Exception e) {
 			log.error("查询异常:{}",e);
 			e.printStackTrace();
@@ -93,18 +99,77 @@ public class YxController {
 	
 	@ApiOperation("获取营销结果分类接口")
 	@RequestMapping(value="/getYxResultFL", method = {RequestMethod.POST}, produces = "application/json;charset=UTF-8")
-    public RespData<DmpFeedBackResultBean> getYxResultFL(@ApiParam(value = "任务id", required = true)@RequestParam("disId") String disId) {
+    public RespData<Page<DmpFeedBackResultBean>> getYxResultFL(@ApiParam(value = "页码", required = true)@RequestParam("pageNo") Integer pageNo,
+			@ApiParam(value = "每页数据条数", required = true)@RequestParam("pageSize") Integer pageSize,
+			@ApiParam(value = "任务id", required = true)@RequestParam("disId") String disId) {
 		
 		try {
 			Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 			
 			log.info("auth:{},disId:{}",auth.getName(),disId);
 			
-			List<DmpFeedBackResultBean> dmpFeedBackResultBeans = yxTagService.getYxResultFL(auth.getName(), disId);
+			Page<DmpFeedBackResultBean> dmpFeedBackResultBeans = yxTagService.getYxResultFL(auth.getName(), disId, pageNo, pageSize);
 			
 			return new RespData(RespData.SUCCESS, RespData.DEFAULT_MSG,dmpFeedBackResultBeans);
 		} catch (Exception e) {
 			log.error("查询营销结果分类信息异常:{}",e);
+			e.printStackTrace();
+			return new RespData(RespData.FAIL, RespData.ERROR_MSG,null);
+		}
+    }
+	
+	@ApiOperation("查询派单接口")
+	@RequestMapping(value="/getPd", method = {RequestMethod.POST}, produces = "application/json;charset=UTF-8")
+    public RespData<Page<PdBean>> getPd(@ApiParam(value = "页码", required = true)@RequestParam("pageNo") Integer pageNo,
+			@ApiParam(value = "每页数据条数", required = true)@RequestParam("pageSize") Integer pageSize) {
+		
+		try {
+			Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+			
+			log.info("auth:{}",auth.getName());
+			
+			Page<PdBean> pdBeans = yxTagService.getPd(auth.getName(), pageNo, pageSize);
+			return new RespData(RespData.SUCCESS, RespData.DEFAULT_MSG,pdBeans);
+		} catch (Exception e) {
+			log.error("查询派单异常:{}",e);
+			e.printStackTrace();
+			return new RespData(RespData.FAIL, RespData.ERROR_MSG,null);
+		}
+    }
+	
+	@ApiOperation("查询派单资源接口")
+	@RequestMapping(value="/getPdResource", method = {RequestMethod.POST}, produces = "application/json;charset=UTF-8")
+    public RespData<PdResourceBean> getPdResource(@ApiParam(value = "任务id", required = true)@RequestParam("disId") String disId, @ApiParam(value = "营销结果id，flag 为1时传递", required = true)@RequestParam("feedbackSecId") String feedbackSecId,@ApiParam(value = "flag", required = true)@RequestParam("flag") String flag) {
+		
+		try {
+			Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+			
+			log.info("auth:{},disId:{}",auth.getName(),disId);
+			
+			List<PdResourceBean> pdResourceBeans = yxTagService.getPdResource(auth.getName(), disId, feedbackSecId, flag);
+			
+			return new RespData(RespData.SUCCESS, RespData.DEFAULT_MSG,pdResourceBeans);
+		} catch (Exception e) {
+			log.error("查询派单资源异常:{}",e);
+			e.printStackTrace();
+			return new RespData(RespData.FAIL, RespData.ERROR_MSG,null);
+		}
+    }
+	
+	@ApiOperation("营销录音信息查询接口")
+	@RequestMapping(value="/getAudioList", method = {RequestMethod.GET}, produces = "application/json;charset=UTF-8")
+    public RespData<Page<DmpAudioBean>> getAudioList(@ApiParam(value = "页码", required = true)@RequestParam("pageNo") Integer pageNo,
+			@ApiParam(value = "每页数据条数", required = true)@RequestParam("pageSize") Integer pageSize) {
+		
+		try {
+			Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+			
+			log.info("auth:{}",auth.getName());
+			Page<DmpAudioBean> dmpAudiosPage =  yxTagService.getAudioList(auth.getName(), pageNo, pageSize);
+			
+			return new RespData<Page<DmpAudioBean>>(RespData.SUCCESS, RespData.DEFAULT_MSG, dmpAudiosPage);
+		} catch (Exception e) {
+			log.error("查询异常:{}",e);
 			e.printStackTrace();
 			return new RespData(RespData.FAIL, RespData.ERROR_MSG,null);
 		}
