@@ -225,11 +225,11 @@ public class YxTagServiceImpl implements YxTagService {
 //					.append(" and n.flag = 0) do_count,to_char(t.distru_time, 'yyyy-mm-dd') tim  from dmp_employee_distrubute t,dmp_file_upload a ")
 //					.append(" where t.account =  ? and t.source_id = a.dmp_sour_id and upper(a.dmp_online_flag) = 'Y' order by t.distru_time desc ");
 		//mysql
-		sqlCount.append(" select count(0)  from dmp_employee_distrubute t,dmp_file_upload a ")
+		sqlCount.append(" select count(0)  from DMP_EMPLOYEE_DISTRUBUTE t,dmp_file_upload a ")
 				.append(" where t.account =  ? and t.source_id = a.dmp_sour_id and a.dmp_online_flag = 'Y' order by t.distru_time desc ");
 
 		stringBuffer.append(" select t.distru_id,t.distru_name,t.sour_count,(select count(1) from dmp_employee_source n  where n.distru_id = t.distru_id and n.employee_id = t.account")
-					.append(" and n.flag = 0) do_count,to_char(t.distru_time, 'yyyy-mm-dd') tim  from dmp_employee_distrubute t,dmp_file_upload a ")
+					.append(" and n.flag = 0) do_count,to_char(t.distru_time, 'yyyy-mm-dd') tim  from DMP_EMPLOYEE_DISTRUBUTE t,dmp_file_upload a ")
 					.append(" where t.account =  ? and t.source_id = a.dmp_sour_id and a.dmp_online_flag = 'Y' order by t.distru_time desc ");
 			
 //			pdBeans = jdbcTemplate.query(stringBuffer.toString(), new PdBeanMapper(),new Object[] {account});
@@ -249,19 +249,13 @@ public class YxTagServiceImpl implements YxTagService {
 		StringBuffer sqlCount  = new StringBuffer();
 		StringBuffer stringBuffer  = new StringBuffer();
 //		List<PdBean> pdBeans = new ArrayList<PdBean>();
-		//oracle 
-//		sqlCount.append(" select count(0)  from dmp_employee_distrubute t,dmp_file_upload a ")
-//				.append(" where t.account =  ? and t.source_id = a.dmp_sour_id and upper(a.dmp_online_flag) = 'Y' order by t.distru_time desc ");
-//		
-//		stringBuffer.append(" select t.distru_id,t.distru_name,t.sour_count,(select count(1) from dmp_employee_source n  where n.distru_id = t.distru_id and n.employee_id = t.account")
-//					.append(" and n.flag = 0) do_count,to_char(t.distru_time, 'yyyy-mm-dd') tim  from dmp_employee_distrubute t,dmp_file_upload a ")
-//					.append(" where t.account =  ? and t.source_id = a.dmp_sour_id and upper(a.dmp_online_flag) = 'Y' order by t.distru_time desc ");
+
 		//mysql
 		sqlCount.append(" select count(0)  from DMP_MARKETING_DETAIL t  ")
 				.append(" where t.employee_id  =  ? order by t.marking_time desc ");
 
 		stringBuffer.append(" select t.sour_phone,t.callflowid,t.marking_time from DMP_MARKETING_DETAIL t ")
-					.append(" where t.account =  ? order by t.marking_time desc ");
+					.append(" where t.employee_id =  ? order by t.marking_time desc ");
 			
 		if(pageSize < 1) {
         	pageSize = PAGE_SIZE.intValue();
