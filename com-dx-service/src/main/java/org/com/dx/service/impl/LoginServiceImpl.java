@@ -53,11 +53,11 @@ public class LoginServiceImpl implements LoginService,UserDetailsService {
 			StringBuffer sqlBuffer = new StringBuffer();
 			
 			//oracle
-			sqlBuffer = sqlBuffer.append("select t.* from DMP_EMPLOYEE t, DMP_CHANNEL_LIST n, DMP_ROLE_LIST n1  where t.CHANNEL_ID = n.CHANNEL_ID and t.ROLE_ID = n1.ROLE_ID and t.ACCOUNT = ? ")
-						.append(" and t.C_FLAG = '0' and rownum<=1 ");
+//			sqlBuffer = sqlBuffer.append("select t.* from DMP_EMPLOYEE t, DMP_CHANNEL_LIST n, DMP_ROLE_LIST n1  where t.CHANNEL_ID = n.CHANNEL_ID and t.ROLE_ID = n1.ROLE_ID and t.ACCOUNT = ? ")
+//						.append(" and t.C_FLAG = '0' and rownum<=1 ");
 			
-//			sqlBuffer = sqlBuffer.append("select t.* from DMP_EMPLOYEE t, DMP_CHANNEL_LIST n, DMP_ROLE_LIST n1  where t.CHANNEL_ID = n.CHANNEL_ID and t.ROLE_ID = n1.ROLE_ID and t.account = ? ")
-//					.append(" and t.C_FLAG = '0' limit 1 ");
+			sqlBuffer = sqlBuffer.append("select t.* from DMP_EMPLOYEE t, DMP_CHANNEL_LIST n, DMP_ROLE_LIST n1  where t.CHANNEL_ID = n.CHANNEL_ID and t.ROLE_ID = n1.ROLE_ID and t.account = ? ")
+					.append(" and t.C_FLAG = '0' limit 1 ");
 			try {
 				DmpEmployeeBean dmpEmployeeBean = jdbcTemplate.queryForObject(sqlBuffer.toString(), new DmpEmployeeBeanMapper(),new Object[]{username});
 				

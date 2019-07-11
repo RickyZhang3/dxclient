@@ -98,7 +98,7 @@ public class YxController {
     }
 	
 	@ApiOperation("获取营销结果分类接口")
-	@RequestMapping(value="/getYxResultFL", method = {RequestMethod.POST}, produces = "application/json;charset=UTF-8")
+	@RequestMapping(value="/getYxResultFL", method = {RequestMethod.GET}, produces = "application/json;charset=UTF-8")
     public RespData<Page<DmpFeedBackResultBean>> getYxResultFL(@ApiParam(value = "页码", required = true)@RequestParam("pageNo") Integer pageNo,
 			@ApiParam(value = "每页数据条数", required = true)@RequestParam("pageSize") Integer pageSize,
 			@ApiParam(value = "任务id", required = true)@RequestParam("disId") String disId) {
@@ -119,7 +119,7 @@ public class YxController {
     }
 	
 	@ApiOperation("查询派单接口")
-	@RequestMapping(value="/getPd", method = {RequestMethod.POST}, produces = "application/json;charset=UTF-8")
+	@RequestMapping(value="/getPd", method = {RequestMethod.GET}, produces = "application/json;charset=UTF-8")
     public RespData<Page<PdBean>> getPd(@ApiParam(value = "页码", required = true)@RequestParam("pageNo") Integer pageNo,
 			@ApiParam(value = "每页数据条数", required = true)@RequestParam("pageSize") Integer pageSize) {
 		
@@ -138,7 +138,7 @@ public class YxController {
     }
 	
 	@ApiOperation("查询派单资源接口")
-	@RequestMapping(value="/getPdResource", method = {RequestMethod.POST}, produces = "application/json;charset=UTF-8")
+	@RequestMapping(value="/getPdResource", method = {RequestMethod.GET}, produces = "application/json;charset=UTF-8")
     public RespData<PdResourceBean> getPdResource(@ApiParam(value = "任务id", required = true)@RequestParam("disId") String disId, @ApiParam(value = "营销结果id，flag 为1时传递", required = true)@RequestParam("feedbackSecId") String feedbackSecId,@ApiParam(value = "flag", required = true)@RequestParam("flag") String flag) {
 		
 		try {

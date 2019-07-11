@@ -164,7 +164,7 @@ public class YxTagServiceImpl implements YxTagService {
 					.append(" where t.sour_phone = n.sour_phone(+) ")
 					.append(" and t.recovery_flag = '0' and t.distru_id = ? ").append(" and t.employee_id =  ) m, ")
 					.append(" DMP_FEEDBACK_INFO m1").append(" where m.feedback_sec_id = m1.feedback_id(+)")
-					.append(" roup by m.feedback_sec_id, m1.feedback_name").append(" order by m.feedback_sec_id asc");
+					.append(" group by m.feedback_sec_id, m1.feedback_name").append(" order by m.feedback_sec_id asc");
 		
 		stringBuffer.append(" select m.feedback_sec_id,nvl(m1.feedback_name, '未拨打客户') feedback_name, count(1) c_count ")
 					.append(" from (select t.sour_phone, nvl(n.feedback_sec_id, '0') feedback_sec_id ")
@@ -175,7 +175,7 @@ public class YxTagServiceImpl implements YxTagService {
 					.append(" where t.sour_phone = n.sour_phone(+) ")
 					.append(" and t.recovery_flag = '0' and t.distru_id = ?").append(" and t.employee_id = ? ) m, ")
 					.append(" DMP_FEEDBACK_INFO m1").append(" where m.feedback_sec_id = m1.feedback_id(+)")
-					.append(" roup by m.feedback_sec_id, m1.feedback_name").append(" order by m.feedback_sec_id asc");
+					.append(" group by m.feedback_sec_id, m1.feedback_name").append(" order by m.feedback_sec_id asc");
 		
 		if(pageSize < 1) {
         	pageSize = PAGE_SIZE.intValue();
