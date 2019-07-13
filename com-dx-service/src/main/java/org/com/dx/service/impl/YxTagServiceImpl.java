@@ -155,33 +155,34 @@ public class YxTagServiceImpl implements YxTagService {
 		StringBuffer sqlCount  = new StringBuffer();
 		StringBuffer stringBuffer  = new StringBuffer();
 		
-			sqlCount.append(" select count(0) ")
+			sqlCount.append(" select count(0) from (")
+					.append(" select m.feedback_sec_id feedback_sec_id ,nvl(m1.feedback_name, '未拨打客户') feedback_name, count(1) c_count ")
 					.append(" from (select t.sour_phone, nvl(n.feedback_sec_id, '0') feedback_sec_id ")
 					.append(" from dmp_employee_source t, ").append(" (select * from (select a.*, ")
 					.append(" row_number() over(partition by a.distru_id, a.sour_phone order by a.marking_time desc) rn ")
-					.append(" rom dmp_marketing_detail a where a.distru_id = ?")
-					.append(" and a.employee_id = ? ").append(" where rn = 1) n ")
+					.append(" from dmp_marketing_detail a where a.distru_id = ?")
+					.append(" and a.employee_id = ?) ").append(" where rn = 1) n ")
 					.append(" where t.sour_phone = n.sour_phone(+) ")
-					.append(" and t.recovery_flag = '0' and t.distru_id = ? ").append(" and t.employee_id =  ) m, ")
+					.append(" and t.recovery_flag = '0' and t.distru_id = ? ").append(" and t.employee_id = ? ) m, ")
 					.append(" DMP_FEEDBACK_INFO m1").append(" where m.feedback_sec_id = m1.feedback_id(+)")
-					.append(" group by m.feedback_sec_id, m1.feedback_name").append(" order by m.feedback_sec_id asc");
+					.append(" group by m.feedback_sec_id, m1.feedback_name").append(" order by m.feedback_sec_id asc ) ");
 		
-		stringBuffer.append(" select m.feedback_sec_id,nvl(m1.feedback_name, '未拨打客户') feedback_name, count(1) c_count ")
+		stringBuffer.append(" select m.feedback_sec_id feedback_sec_id ,nvl(m1.feedback_name, '未拨打客户') feedback_name, count(1) c_count ")
 					.append(" from (select t.sour_phone, nvl(n.feedback_sec_id, '0') feedback_sec_id ")
 					.append(" from dmp_employee_source t, ").append(" (select * from (select a.*, ")
 					.append(" row_number() over(partition by a.distru_id, a.sour_phone order by a.marking_time desc) rn ")
-					.append(" rom dmp_marketing_detail a where a.distru_id = ?")
-					.append(" and a.employee_id = ?").append(" where rn = 1) n ")
+					.append(" from dmp_marketing_detail a where a.distru_id = ?")
+					.append(" and a.employee_id = ? )").append(" where rn = 1) n ")
 					.append(" where t.sour_phone = n.sour_phone(+) ")
 					.append(" and t.recovery_flag = '0' and t.distru_id = ?").append(" and t.employee_id = ? ) m, ")
 					.append(" DMP_FEEDBACK_INFO m1").append(" where m.feedback_sec_id = m1.feedback_id(+)")
-					.append(" group by m.feedback_sec_id, m1.feedback_name").append(" order by m.feedback_sec_id asc");
+					.append(" group by m.feedback_sec_id, m1.feedback_name").append(" order by m.feedback_sec_id asc ");
 		
 		if(pageSize < 1) {
         	pageSize = PAGE_SIZE.intValue();
         }
 //		List<DmpFeedBackResultBean> dBackResultBeans = jdbcTemplate.query(stringBuffer.toString(), new DmpFeedBackResultBeanMapper());
-		Page<DmpFeedBackResultBean> dBackResultBeans = paginationHelper.fetchPage(jdbcTemplate, sqlCount.toString(), stringBuffer.toString(), new Object[] {disId,account,disId}, pageNo, pageSize, new DmpFeedBackResultBeanMapper());	 
+		Page<DmpFeedBackResultBean> dBackResultBeans = paginationHelper.fetchPage(jdbcTemplate, sqlCount.toString(), stringBuffer.toString(), new Object[] {disId,account,disId,account}, pageNo, pageSize, new DmpFeedBackResultBeanMapper());	 
 					
 		return dBackResultBeans;
 	}
@@ -194,13 +195,13 @@ public class YxTagServiceImpl implements YxTagService {
 				stringBuffer.append(" select t.sour_phone,to_char(t.follow_time, 'yyyy-mm-dd') follow_time,t.sour_remark_one,t.sour_remark_two,t.sour_remark_three,t.sour_seq ")
 				.append(" from dmp_employee_source t where t.flag = '1' and t.recovery_flag = '0' ")
 				.append(" and t.distru_id = ?")
-				.append("  and a.employee_id = ? ");
+				.append("  and t.employee_id = ? ");
 				
 				pdResourceBeans = jdbcTemplate.query(stringBuffer.toString(), new PdResourceBeanMapper(),new Object[] {disId,account});
 			}else {
 				stringBuffer.append(" select t.sour_phone,to_char(t.follow_time, 'yyyy-mm-dd') follow_time,t.sour_remark_one,t.sour_remark_two,t.sour_remark_three,t.sour_seq ")
-				.append(" from dmp_employee_source t  (select * from (select a.*, row_number() over(partition by a.distru_id, a.sour_phone order by a.marking_time desc) rn ")
-				.append(" from dmp_marketing_detail a where a.distru_id = ?   and a.employee_id = ?  )   where rn = 1 and feedback_sec_id= ?")
+				.append(" from dmp_employee_source t,  (select * from (select a.*, row_number() over(partition by a.distru_id, a.sour_phone order by a.marking_time desc) rn ")
+				.append(" from dmp_marketing_detail a where a.distru_id = ?   and a.employee_id = ?  )   where rn = 1 and feedback_sec_id= ? ) n ")
 				.append(" where t.sour_phone = n.sour_phone and t.distru_id = ? and t.employee_id = ?");
 				
 				pdResourceBeans = jdbcTemplate.query(stringBuffer.toString(), new PdResourceBeanMapper(),new Object[] {disId,account,feedbackSecId,disId,account});
