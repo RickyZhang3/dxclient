@@ -83,11 +83,18 @@
          <scope>runtime</scope>
     </dependency>
     
- 	<!-- <dependency> 
+	<dependency> 
     	<groupId>com.oracle</groupId>
     	<artifactId>ojdbc14</artifactId>
     	<version>10.2.0.3.0</version>
-	</dependency> -->
+	</dependency>
+	
+	<dependency>
+	    <groupId>com.alibaba</groupId>
+	    <artifactId>fastjson</artifactId>
+	    <version>1.2.62</version>
+	</dependency>
+		
         
   </dependencies>
   

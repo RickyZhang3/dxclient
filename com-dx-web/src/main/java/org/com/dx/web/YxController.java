@@ -14,17 +14,24 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
+
+import com.alibaba.fastjson.JSON;
 
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 
+import java.io.IOException;
 import java.util.List;
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 @RestController
 @RequestMapping("/yxTag")
@@ -157,10 +164,38 @@ public class YxController {
     }
 	
 	@ApiOperation("营销录音信息查询接口")
+	@RequestMapping(value="/getAudioListJsonp", method = {RequestMethod.GET}, produces = "application/json;charset=UTF-8")
+    public void getAudioListJsonp(@ApiParam(value = "页码", required = true)@RequestParam("pageNo") Integer pageNo,
+			@ApiParam(value = "每页数据条数", required = true)@RequestParam("pageSize") Integer pageSize,HttpServletRequest request
+			, HttpServletResponse response) throws IOException {
+		response.setContentType("text/javascript");
+		response.setCharacterEncoding("UTF-8");
+		String jsonpCallback = request.getParameter("callback");
+		try {
+			Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+			
+			log.info("auth:{}",auth.getName());
+			Page<DmpAudioBean> dmpAudiosPage =  yxTagService.getAudioList(auth.getName(), pageNo, pageSize);
+			
+//			return new RespData<Page<DmpAudioBean>>(RespData.SUCCESS, RespData.DEFAULT_MSG, dmpAudiosPage);
+			RespData<Page<DmpAudioBean>> respData =  new RespData<Page<DmpAudioBean>>(RespData.SUCCESS, RespData.DEFAULT_MSG, dmpAudiosPage);
+			response.getWriter().write(jsonpCallback + "(" + JSON.toJSONString(respData) + ")");
+//			return jsonpCallback + "(" + JSON.toJSONString(respData) + ")";
+//			return JSON.toJSONString(respData);
+		} catch (Exception e) {
+			log.error("查询异常:{}",e);
+			e.printStackTrace();
+//			return new RespData(RespData.FAIL, RespData.ERROR_MSG,null);
+//			return jsonpCallback + "(" + JSON.toJSONString(new RespData(RespData.FAIL, RespData.ERROR_MSG,null)) + ")";
+//			return JSON.toJSONString(new RespData(RespData.FAIL, RespData.ERROR_MSG,null));
+			response.getWriter().write(jsonpCallback + "(" + JSON.toJSONString(new RespData(RespData.FAIL, RespData.ERROR_MSG,null)) + ")");
+		}
+    }
+	
+	@ApiOperation("营销录音信息查询接口")
 	@RequestMapping(value="/getAudioList", method = {RequestMethod.GET}, produces = "application/json;charset=UTF-8")
     public RespData<Page<DmpAudioBean>> getAudioList(@ApiParam(value = "页码", required = true)@RequestParam("pageNo") Integer pageNo,
 			@ApiParam(value = "每页数据条数", required = true)@RequestParam("pageSize") Integer pageSize) {
-		
 		try {
 			Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 			
