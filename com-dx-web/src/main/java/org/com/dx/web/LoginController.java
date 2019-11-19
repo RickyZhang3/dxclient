@@ -16,6 +16,8 @@ import org.com.dx.common.RespData;
 import org.com.dx.service.LoginService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -72,6 +74,10 @@ public class LoginController {
 				map.put(strings[0].split("=")[0], strings[0].split("=")[1]);
 				
 			}
+			Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+
+			log.info("userInfo:{}",auth.getName());
+			map.put("username",auth.getName());
 			return new RespData<Map<String,String>>(RespData.SUCCESS,RespData.DEFAULT_MSG,map);
 		}catch (Exception e) {
 			e.printStackTrace();

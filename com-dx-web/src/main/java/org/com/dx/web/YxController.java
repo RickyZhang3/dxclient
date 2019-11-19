@@ -166,16 +166,17 @@ public class YxController {
 	@ApiOperation("营销录音信息查询接口")
 	@RequestMapping(value="/getAudioListJsonp", method = {RequestMethod.GET}, produces = "application/json;charset=UTF-8")
     public void getAudioListJsonp(@ApiParam(value = "页码", required = true)@RequestParam("pageNo") Integer pageNo,
-			@ApiParam(value = "每页数据条数", required = true)@RequestParam("pageSize") Integer pageSize,HttpServletRequest request
+			@ApiParam(value = "每页数据条数", required = true)@RequestParam("pageSize") Integer pageSize,
+			@RequestParam("username") String username,HttpServletRequest request
 			, HttpServletResponse response) throws IOException {
 		response.setContentType("text/javascript");
 		response.setCharacterEncoding("UTF-8");
 		String jsonpCallback = request.getParameter("callback");
 		try {
-			Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+//			Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 			
-			log.info("auth:{}",auth.getName());
-			Page<DmpAudioBean> dmpAudiosPage =  yxTagService.getAudioList(auth.getName(), pageNo, pageSize);
+			log.info("auth:{}",username);
+			Page<DmpAudioBean> dmpAudiosPage =  yxTagService.getAudioList(username, pageNo, pageSize);
 			
 //			return new RespData<Page<DmpAudioBean>>(RespData.SUCCESS, RespData.DEFAULT_MSG, dmpAudiosPage);
 			RespData<Page<DmpAudioBean>> respData =  new RespData<Page<DmpAudioBean>>(RespData.SUCCESS, RespData.DEFAULT_MSG, dmpAudiosPage);
@@ -195,12 +196,12 @@ public class YxController {
 	@ApiOperation("营销录音信息查询接口")
 	@RequestMapping(value="/getAudioList", method = {RequestMethod.GET}, produces = "application/json;charset=UTF-8")
     public RespData<Page<DmpAudioBean>> getAudioList(@ApiParam(value = "页码", required = true)@RequestParam("pageNo") Integer pageNo,
-			@ApiParam(value = "每页数据条数", required = true)@RequestParam("pageSize") Integer pageSize) {
+			@ApiParam(value = "每页数据条数", required = true)@RequestParam("pageSize") Integer pageSize , @RequestParam("username") String username) {
 		try {
-			Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+//			Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 			
-			log.info("auth:{}",auth.getName());
-			Page<DmpAudioBean> dmpAudiosPage =  yxTagService.getAudioList(auth.getName(), pageNo, pageSize);
+			log.info("auth:{}",username);
+			Page<DmpAudioBean> dmpAudiosPage =  yxTagService.getAudioList(username, pageNo, pageSize);
 			
 			return new RespData<Page<DmpAudioBean>>(RespData.SUCCESS, RespData.DEFAULT_MSG, dmpAudiosPage);
 		} catch (Exception e) {

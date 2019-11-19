@@ -33,7 +33,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	
 	@Override
     protected void configure(HttpSecurity http) throws Exception {
-        	http.authorizeRequests().antMatchers("/api","/v2/**","/swagger-ui.html","/webjars/**","/swagger-resources/**","/dxlogin/nologin")
+        	http.authorizeRequests().antMatchers("/api","/v2/**","/swagger-ui.html","/webjars/**","/swagger-resources/**","/dxlogin/nologin","/yxTag/getAudioListJsonp","/yxTag/getAudioList","/dx/getAudio")
         	.permitAll()
         	.anyRequest().authenticated()
         	.and()
