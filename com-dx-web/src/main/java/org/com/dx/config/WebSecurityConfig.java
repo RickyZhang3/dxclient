@@ -38,6 +38,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         	.anyRequest().authenticated()
         	.and()
         	.csrf().disable()
+		    .headers().frameOptions().disable()
+		    .and()
         	.formLogin()
         	.failureForwardUrl("/dxlogin/nologin")
         	.successForwardUrl("/dxlogin/success")

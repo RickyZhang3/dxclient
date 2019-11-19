@@ -81,7 +81,7 @@ public class FileController {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-        headers.add("Content-Disposition", "attachment;filename="+finalFileNameString);  
+        headers.add("Content-Disposition", "attachment;filename="+finalFileNameString);
         return new ResponseEntity<byte[]>(body, headers, HttpStatus.OK);  
 
     }
