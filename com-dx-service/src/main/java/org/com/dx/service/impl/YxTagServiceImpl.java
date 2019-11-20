@@ -120,13 +120,13 @@ public class YxTagServiceImpl implements YxTagService {
 		StringBuffer stringBuffer1  = new StringBuffer();
 		dmpMarketingDetailBean.setSourPhone(String.valueOf(Long.valueOf(dmpMarketingDetailBean.getSourPhone())+Long.valueOf(NUM_SUFFIX)));
 		//oracle
-//		stringBuffer.append("insert into DMP_MARKETING_DETAIL  (DISTRU_ID,EMPLOYEE_ID,SOUR_PHONE,MARKING_TIME,FEEDBACK_FIRST_ID")
-//		.append(" ,FEEDBACK_SEC_ID,CALLFLOWID,SOUR_SEQ,MARKING_TYPE,CUST_NAME,WECHAT,COMPANY,DEMAND,BUDGET,TALK_DETAIL,FLAG")
-//		.append(" ,TYPES,LABLE_ID,REMARK) values ( ?,?,?,sysdate,?,?,?,?,?,?,?,?,?,?,?,?,?,?,? )");
-		
 		stringBuffer.append("insert into DMP_MARKETING_DETAIL  (DISTRU_ID,EMPLOYEE_ID,SOUR_PHONE,MARKING_TIME,FEEDBACK_FIRST_ID")
-					.append(" ,FEEDBACK_SEC_ID,CALLFLOWID,SOUR_SEQ,MARKING_TYPE,CUST_NAME,WECHAT,COMPANY,DEMAND,BUDGET,TALK_DETAIL,FLAG")
-					.append(" ,TYPES,LABLE_ID,REMARK) values ( ?,?,?,now(),?,?,?,?,?,?,?,?,?,?,?,?,?,?,? )");
+		.append(" ,FEEDBACK_SEC_ID,CALLFLOWID,SOUR_SEQ,MARKING_TYPE,CUST_NAME,WECHAT,COMPANY,DEMAND,BUDGET,TALK_DETAIL,FLAG")
+		.append(" ,TYPES,LABLE_ID,REMARK) values ( ?,?,?,sysdate,?,?,?,?,?,?,?,?,?,?,?,?,?,?,? )");
+		
+//		stringBuffer.append("insert into DMP_MARKETING_DETAIL  (DISTRU_ID,EMPLOYEE_ID,SOUR_PHONE,MARKING_TIME,FEEDBACK_FIRST_ID")
+//					.append(" ,FEEDBACK_SEC_ID,CALLFLOWID,SOUR_SEQ,MARKING_TYPE,CUST_NAME,WECHAT,COMPANY,DEMAND,BUDGET,TALK_DETAIL,FLAG")
+//					.append(" ,TYPES,LABLE_ID,REMARK) values ( ?,?,?,now(),?,?,?,?,?,?,?,?,?,?,?,?,?,?,? )");
 		
 		log.info("insert sql:{}",stringBuffer.toString());
 		
