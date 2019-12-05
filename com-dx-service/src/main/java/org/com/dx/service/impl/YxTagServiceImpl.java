@@ -91,11 +91,17 @@ public class YxTagServiceImpl implements YxTagService {
 //		List<DmpFeedBackInfo> lableBeans = new ArrayList<DmpFeedBackInfo>();
 		PaginationHelper<DmpFeedBackInfo> paginationHelper = new PaginationHelper<DmpFeedBackInfo>();
 		
-		sqlCount.append("select count(0) from DMP_FEEDBACK_INFO t where t.feedback_personal= ?")
-		.append(" and t.feedback_flag='Y' order by t.feedback_num");
-		
-		stringBuffer.append("select t.feedback_id,t.feedback_name from DMP_FEEDBACK_INFO t where t.feedback_personal= ?")
-					.append(" and t.feedback_flag='Y' order by t.feedback_num");
+//		sqlCount.append("select count(0) from DMP_FEEDBACK_INFO t where t.feedback_personal= ?")
+//		.append(" and t.feedback_flag='Y' order by t.feedback_num");
+//
+//		stringBuffer.append("select t.feedback_id,t.feedback_name from DMP_FEEDBACK_INFO t where t.feedback_personal= ?")
+//					.append(" and t.feedback_flag='Y' order by t.feedback_num");
+
+		sqlCount.append("select count(0) from DMP_FEEDBACK_INFO t, dmp_employee n where n.account = ?")
+		.append(" and upper(t.feedback_flag) = 'Y' and t.feedback_personal = n.creater order by t.feedback_num asc");
+
+		stringBuffer.append("select t.feedback_id,t.feedback_name,t.feedback_personal,t.feedback_date,t.feedback_company,t.feedback_num from DMP_FEEDBACK_INFO t, dmp_employee n where n.account = ?")
+					.append(" and upper(t.feedback_flag)='Y' and t.feedback_personal = n.creater order by t.feedback_num asc ");
 		
 		if(pageSize < 1) {
         	pageSize = PAGE_SIZE.intValue();
@@ -226,12 +232,32 @@ public class YxTagServiceImpl implements YxTagService {
 //					.append(" and n.flag = 0) do_count,to_char(t.distru_time, 'yyyy-mm-dd') tim  from dmp_employee_distrubute t,dmp_file_upload a ")
 //					.append(" where t.account =  ? and t.source_id = a.dmp_sour_id and upper(a.dmp_online_flag) = 'Y' order by t.distru_time desc ");
 		//mysql
-		sqlCount.append(" select count(0)  from DMP_EMPLOYEE_DISTRUBUTE t,dmp_file_upload a ")
-				.append(" where t.account =  ? and t.source_id = a.dmp_sour_id and a.dmp_online_flag = 'Y' order by t.distru_time desc ");
+//		sqlCount.append(" select count(0)  from DMP_EMPLOYEE_DISTRUBUTE t,dmp_file_upload a ")
+//				.append(" where t.account =  ? and t.source_id = a.dmp_sour_id and a.dmp_online_flag = 'Y' order by t.distru_time desc ");
 
-		stringBuffer.append(" select t.distru_id,t.distru_name,t.sour_count,(select count(1) from dmp_employee_source n  where n.distru_id = t.distru_id and n.employee_id = t.account")
-					.append(" and n.flag = 0) do_count,to_char(t.distru_time, 'yyyy-mm-dd') tim  from DMP_EMPLOYEE_DISTRUBUTE t,dmp_file_upload a ")
-					.append(" where t.account =  ? and t.source_id = a.dmp_sour_id and a.dmp_online_flag = 'Y' order by t.distru_time desc ");
+//		stringBuffer.append(" select t.distru_id,t.distru_name,t.sour_count,(select count(1) from dmp_employee_source n  where n.distru_id = t.distru_id and n.employee_id = t.account")
+//					.append(" and n.flag = 0) do_count,to_char(t.distru_time, 'yyyy-mm-dd') tim  from DMP_EMPLOYEE_DISTRUBUTE t,dmp_file_upload a ")
+//					.append(" where t.account =  ? and t.source_id = a.dmp_sour_id and a.dmp_online_flag = 'Y' order by t.distru_time desc ");
+
+				sqlCount.append(" select count(0) from DMP_EMPLOYEE_DISTRUBUTE t,dmp_file_upload a ")
+				.append(" where t.account =  ? and t.source_id=a.dmp_sour_id and upper(a.dmp_online_flag)='Y' order by t.distru_time desc ");
+
+				stringBuffer.append(" select t.distru_id,t.distru_name,(select count(1)" +
+						" from dmp_employee_source n" +
+						" where n.distru_id = t.distru_id" +
+						" and n.employee_id = t.account" +
+						" and n.recovery_flag=0) sour_count," +
+						" (select count(1)" +
+						" from dmp_employee_source n" +
+						" where n.distru_id = t.distru_id" +
+						" and n.employee_id = t.account" +
+						" and n.flag = 0 and n.recovery_flag=0) do_count," +
+						" to_char(t.distru_time, 'yyyy-mm-dd') tim" +
+						" from dmp_employee_distrubute t,dmp_file_upload a" +
+						" where t.account = ? " +
+						" and t.source_id = a.dmp_sour_id" +
+						" and upper(a.dmp_online_flag) = 'Y'" +
+						" order by t.distru_time desc");
 			
 //			pdBeans = jdbcTemplate.query(stringBuffer.toString(), new PdBeanMapper(),new Object[] {account});
 		if(pageSize < 1) {
