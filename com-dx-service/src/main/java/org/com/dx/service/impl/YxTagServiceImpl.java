@@ -6,6 +6,7 @@ import java.util.Map;
 
 import javax.naming.spi.DirStateFactory.Result;
 
+import com.alibaba.fastjson.JSON;
 import org.apache.commons.io.input.DemuxInputStream;
 import org.com.dx.bean.DmpAudioBean;
 import org.com.dx.bean.DmpEmployeeBean;
@@ -124,7 +125,8 @@ public class YxTagServiceImpl implements YxTagService {
 		
 		StringBuffer stringBuffer  = new StringBuffer();
 		StringBuffer stringBuffer1  = new StringBuffer();
-		dmpMarketingDetailBean.setSourPhone(String.valueOf(Long.valueOf(dmpMarketingDetailBean.getSourPhone())+Long.valueOf(NUM_SUFFIX)));
+		dmpMarketingDetailBean.setSourPhone(dmpMarketingDetailBean.getSourPhone());
+		//Long.valueOf(dmpMarketingDetailBean.getSourPhone())+Long.valueOf(NUM_SUFFIX))
 		//oracle
 		stringBuffer.append("insert into DMP_MARKETING_DETAIL  (DISTRU_ID,EMPLOYEE_ID,SOUR_PHONE,MARKING_TIME,FEEDBACK_FIRST_ID")
 		.append(" ,FEEDBACK_SEC_ID,CALLFLOWID,SOUR_SEQ,MARKING_TYPE,CUST_NAME,WECHAT,COMPANY,DEMAND,BUDGET,TALK_DETAIL,FLAG")
@@ -145,7 +147,7 @@ public class YxTagServiceImpl implements YxTagService {
 					 .append(" and t.sour_phone = ? ");
 		
 		log.info("update sql:{}",stringBuffer1.toString());
-		
+		log.info("参数信息:{}", JSON.toJSONString(dmpMarketingDetailBean));
 		int updateResult = jdbcTemplate.update(stringBuffer1.toString(), new Object[]{dmpMarketingDetailBean.getEmployeeId(), dmpMarketingDetailBean.getDistruId(), dmpMarketingDetailBean.getSourPhone()});
 		
 		log.info("更新资源表结果:{}",updateResult);
