@@ -1,12 +1,6 @@
 package org.com.dx.web;
 
-import org.com.dx.bean.DmpAudioBean;
-import org.com.dx.bean.DmpFeedBackInfo;
-import org.com.dx.bean.DmpFeedBackResultBean;
-import org.com.dx.bean.DmpMarketingDetailBean;
-import org.com.dx.bean.DmpSourceLableBean;
-import org.com.dx.bean.PdBean;
-import org.com.dx.bean.PdResourceBean;
+import org.com.dx.bean.*;
 import org.com.dx.common.RespData;
 import org.com.dx.dao.Page;
 import org.com.dx.service.YxTagService;
@@ -210,4 +204,25 @@ public class YxController {
 			return new RespData(RespData.FAIL, RespData.ERROR_MSG,null);
 		}
     }
+
+	@ApiOperation("查询历史营销结果")
+	@RequestMapping(value="/getHisYxResult", method = {RequestMethod.GET}, produces = "application/json;charset=UTF-8")
+	public RespData<HisYxResultBean> getHisYxResult(@ApiParam(value = "任务id", required = true)@RequestParam("disId") String disId, @ApiParam(value = "资源号码", required = true)@RequestParam("sourPhone") String sourPhone, @ApiParam(value = "营销结果id", required = true)@RequestParam("feedbackSecId") String feedbackSecId) {
+
+		try {
+			Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+
+			log.info("auth:{},disId:{}",auth.getName(),disId);
+
+			HisYxResultBean hisYxResultBean = yxTagService.getHisYxResult(disId, sourPhone, feedbackSecId);
+
+			return new RespData(RespData.SUCCESS, RespData.DEFAULT_MSG,hisYxResultBean);
+		} catch (Exception e) {
+			log.error("查询历史营销结果:{}",e);
+			e.printStackTrace();
+			return new RespData(RespData.FAIL, RespData.ERROR_MSG,null);
+		}
+	}
+
+
 }

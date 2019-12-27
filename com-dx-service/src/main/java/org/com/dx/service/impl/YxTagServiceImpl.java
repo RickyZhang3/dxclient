@@ -8,23 +8,8 @@ import javax.naming.spi.DirStateFactory.Result;
 
 import com.alibaba.fastjson.JSON;
 import org.apache.commons.io.input.DemuxInputStream;
-import org.com.dx.bean.DmpAudioBean;
-import org.com.dx.bean.DmpEmployeeBean;
-import org.com.dx.bean.DmpFeedBackInfo;
-import org.com.dx.bean.DmpFeedBackResultBean;
-import org.com.dx.bean.DmpMarketingDetailBean;
-import org.com.dx.bean.DmpSourceLableBean;
-import org.com.dx.bean.PdBean;
-import org.com.dx.bean.PdResourceBean;
-import org.com.dx.dao.DmpAudioBeanMapper;
-import org.com.dx.dao.DmpEmployeeBeanMapper;
-import org.com.dx.dao.DmpFeedBackInfoMapper;
-import org.com.dx.dao.DmpFeedBackResultBeanMapper;
-import org.com.dx.dao.DmpSourceLableBeanMapper;
-import org.com.dx.dao.Page;
-import org.com.dx.dao.PaginationHelper;
-import org.com.dx.dao.PdBeanMapper;
-import org.com.dx.dao.PdResourceBeanMapper;
+import org.com.dx.bean.*;
+import org.com.dx.dao.*;
 import org.com.dx.service.YxTagService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -294,5 +279,21 @@ public class YxTagServiceImpl implements YxTagService {
 				
 		return dmpPage;
 	}
+
+	@Override
+	public HisYxResultBean getHisYxResult(String disId, String sourPhone, String feedbackSecId) {
+		StringBuffer stringBuffer = new StringBuffer();
+		stringBuffer.append("select c.feedback_sec_id, c.feedback_name,c.cust_name,c.wechat,c.company,c.demand,c.budget,c.talk_detail,")
+				.append(" c.lable_id,c.dmp_lable_name,c.remark from (select t.feedback_sec_id, a.feedback_name, t.cust_name,")
+				.append(" t.wechat,t.company,t.demand,t.budget,t.talk_detail,t.lable_id,b.dmp_lable_name,t.remark,")
+				.append(" row_number() over(partition by t.distru_id, t.sour_phone order by t.marking_time desc) rn")
+				.append(" from dmp_marketing_detail t, dmp_feedback_info    a, dmp_source_lable     b")
+				.append(" where t.feedback_sec_id = a.feedback_id and t.lable_id = b.dmp_lable_id and t.distru_id = ?")
+				.append(" and t.sour_phone = ? and t.feedback_sec_id = ? ) c where rn = 1");
+
+		HisYxResultBean hisYxResultBean  = jdbcTemplate.queryForObject(stringBuffer.toString(),new Object[] {disId,sourPhone,feedbackSecId},new HisYxResultBeanMapper());
+		return hisYxResultBean;
+	}
+
 
 }

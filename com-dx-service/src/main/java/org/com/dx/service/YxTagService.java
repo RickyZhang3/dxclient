@@ -2,13 +2,7 @@ package org.com.dx.service;
 
 import java.util.List;
 
-import org.com.dx.bean.DmpAudioBean;
-import org.com.dx.bean.DmpFeedBackInfo;
-import org.com.dx.bean.DmpFeedBackResultBean;
-import org.com.dx.bean.DmpMarketingDetailBean;
-import org.com.dx.bean.DmpSourceLableBean;
-import org.com.dx.bean.PdBean;
-import org.com.dx.bean.PdResourceBean;
+import org.com.dx.bean.*;
 import org.com.dx.dao.Page;
 
 public interface YxTagService {
@@ -26,6 +20,7 @@ public interface YxTagService {
 	Page<PdBean> getPd(String account, Integer pageNo, Integer pageSize);
 	
 	Page<DmpAudioBean> getAudioList(String account, Integer pageNo, Integer pageSize);
-	
+
+	HisYxResultBean getHisYxResult(String disId, String sourPhone, String feedbackSecId);
 	
 }
