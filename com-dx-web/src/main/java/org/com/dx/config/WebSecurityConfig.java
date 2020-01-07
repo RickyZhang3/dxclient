@@ -14,6 +14,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 @Configuration
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
@@ -43,7 +44,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         	.formLogin()
         	.failureForwardUrl("/dxlogin/nologin")
         	.successForwardUrl("/dxlogin/success")
-        	.permitAll();
+        	.permitAll()
+			.and().logout().deleteCookies("JSESSIONID").logoutRequestMatcher(new AntPathRequestMatcher("/logout", "GET"))
+			.invalidateHttpSession(true);
     }
 	
 	@Bean

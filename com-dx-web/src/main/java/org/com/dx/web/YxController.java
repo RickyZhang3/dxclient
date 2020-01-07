@@ -212,7 +212,7 @@ public class YxController {
 		try {
 			Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 
-			log.info("auth:{},disId:{}",auth.getName(),disId);
+			log.info("auth:{},disId:{},sourPhone:{},feedbackSecId:{}",auth.getName(),disId,sourPhone,feedbackSecId);
 
 			HisYxResultBean hisYxResultBean = yxTagService.getHisYxResult(disId, sourPhone, feedbackSecId);
 
