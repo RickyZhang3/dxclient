@@ -266,10 +266,10 @@ public class YxTagServiceImpl implements YxTagService {
 
 		//mysql
 		sqlCount.append(" select count(0)  from DMP_MARKETING_DETAIL t  ")
-				.append(" where t.employee_id  =  ? order by t.marking_time desc ");
+				.append(" where t.employee_id  =  ? and t.callflowid is not null order by t.marking_time desc ");
 
 		stringBuffer.append(" select t.sour_phone,t.callflowid,t.marking_time from DMP_MARKETING_DETAIL t ")
-					.append(" where t.employee_id =  ? order by t.marking_time desc ");
+					.append(" where t.employee_id =  ? and t.callflowid is not null order by t.marking_time desc ");
 			
 		if(pageSize < 1) {
         	pageSize = PAGE_SIZE.intValue();

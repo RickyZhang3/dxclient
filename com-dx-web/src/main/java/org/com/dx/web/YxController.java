@@ -220,7 +220,7 @@ public class YxController {
 		} catch (Exception e) {
 			log.error("查询历史营销结果:{}",e);
 			e.printStackTrace();
-			return new RespData(RespData.FAIL, RespData.ERROR_MSG,null);
+			return new RespData(RespData.SUCCESS, RespData.DEFAULT_MSG,null);
 		}
 	}
 
