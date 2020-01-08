@@ -11,6 +11,7 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.alibaba.fastjson.JSON;
 import org.com.dx.bean.DmpEmployeeBean;
 import org.com.dx.common.RespData;
 import org.com.dx.service.LoginService;
@@ -32,8 +33,8 @@ public class LoginController {
 	
 	private static final Logger log = LoggerFactory.getLogger(LoginController.class);
 	
-//	@Resource
-//	LoginService LoginService;
+	@Resource
+	private LoginService loginService;
 	
 //	@ApiOperation("登录接口")
 //	@RequestMapping(value="/submit", method = {RequestMethod.POST}, produces = "application/json;charset=UTF-8")
@@ -62,11 +63,11 @@ public class LoginController {
 	
 	@ApiOperation("登录成功跳转信息，返回用户cookie")
 	@RequestMapping(value="/success", method = {RequestMethod.POST}, produces = "application/json;charset=UTF-8")
-    public RespData<Map<String,String>> successs(HttpServletRequest httpServletRequest,HttpServletResponse httpServletResponse) {
+    public RespData<Map<String,Object>> successs(HttpServletRequest httpServletRequest,HttpServletResponse httpServletResponse) {
 		
 		try {
 			Collection<String> cStrings = httpServletResponse.getHeaders("Set-Cookie");
-			Map<String, String> map = new HashMap<String,String>();
+			Map<String, Object> map = new HashMap<String,Object>();
 			String[] strings = {};
 			for(String cooString:cStrings) {
 				log.info("cooString:{}",cooString);
@@ -76,12 +77,15 @@ public class LoginController {
 			}
 			Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 
+			DmpEmployeeBean dmpEmployeeBean = loginService.getUserInfo(auth.getName());
+
 			log.info("userInfo:{}",auth.getName());
 			map.put("username",auth.getName());
-			return new RespData<Map<String,String>>(RespData.SUCCESS,RespData.DEFAULT_MSG,map);
+			map.put("userInfo", dmpEmployeeBean);
+			return new RespData<Map<String,Object>>(RespData.SUCCESS,RespData.DEFAULT_MSG,map);
 		}catch (Exception e) {
 			e.printStackTrace();
-			return new RespData<Map<String,String>>(RespData.FAIL,RespData.ERROR_MSG,null);
+			return new RespData<Map<String,Object>>(RespData.FAIL,RespData.ERROR_MSG,null);
 		} 
 //		Map<String, String> map = new HashMap<String,String>();
 //		Cookie[] cookies = httpServletRequest.getCookies();

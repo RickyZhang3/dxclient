@@ -8,5 +8,6 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 public interface LoginService {
 	
 	DmpEmployeeBean login(String account,String password);
-	
+
+	DmpEmployeeBean getUserInfo(String account);
 }

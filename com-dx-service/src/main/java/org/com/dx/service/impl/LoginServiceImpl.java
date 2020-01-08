@@ -45,6 +45,26 @@ public class LoginServiceImpl implements LoginService,UserDetailsService {
 	}
 
 	@Override
+	public DmpEmployeeBean getUserInfo(String account) {
+		DmpEmployeeBean dmpEmployeeBean = new DmpEmployeeBean();
+		try {
+			StringBuffer sqlBuffer = new StringBuffer();
+
+			//oracle
+			sqlBuffer = sqlBuffer.append("select t.employee_name,t.account,t.passord,t.role_id,t.phone,n1.role_name,t.channel_id,n.channel_name,to_char(t.cre_time, 'yyyy-mm-dd') as cre_time" +
+					" from DMP_EMPLOYEE t, DMP_CHANNEL_LIST n, DMP_ROLE_LIST n1  where t.CHANNEL_ID = n.CHANNEL_ID and t.ROLE_ID = n1.ROLE_ID and t.ACCOUNT = ? ")
+					.append(" and t.C_FLAG = '0' and rownum<=1 ");
+				dmpEmployeeBean = jdbcTemplate.queryForObject(sqlBuffer.toString(), new DmpEmployeeBeanMapper(),new Object[]{account});
+				dmpEmployeeBean.setPassword("");
+				log.info("user info:{}",dmpEmployeeBean.getPassword());
+			}catch (Exception e) {
+				e.printStackTrace();
+				return null;
+			}
+		return dmpEmployeeBean;
+	}
+
+	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 		
 		log.info("登录重写方法:{}",username);
@@ -53,7 +73,7 @@ public class LoginServiceImpl implements LoginService,UserDetailsService {
 			StringBuffer sqlBuffer = new StringBuffer();
 			
 			//oracle
-			sqlBuffer = sqlBuffer.append("select t.* from DMP_EMPLOYEE t, DMP_CHANNEL_LIST n, DMP_ROLE_LIST n1  where t.CHANNEL_ID = n.CHANNEL_ID and t.ROLE_ID = n1.ROLE_ID and t.ACCOUNT = ? ")
+			sqlBuffer = sqlBuffer.append("select t.employee_name,t.account,t.passord,t.role_id,t.phone,n1.role_name,t.channel_id,n.channel_name,to_char(t.cre_time, 'yyyy-mm-dd') as cre_time from DMP_EMPLOYEE t, DMP_CHANNEL_LIST n, DMP_ROLE_LIST n1  where t.CHANNEL_ID = n.CHANNEL_ID and t.ROLE_ID = n1.ROLE_ID and t.ACCOUNT = ? ")
 						.append(" and t.C_FLAG = '0' and rownum<=1 ");
 			
 //			sqlBuffer = sqlBuffer.append("select t.* from DMP_EMPLOYEE t, DMP_CHANNEL_LIST n, DMP_ROLE_LIST n1  where t.CHANNEL_ID = n.CHANNEL_ID and t.ROLE_ID = n1.ROLE_ID and t.account = ? ")

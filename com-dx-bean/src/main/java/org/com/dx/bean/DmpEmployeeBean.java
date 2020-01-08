@@ -10,7 +10,7 @@ public class DmpEmployeeBean implements Serializable {
 	 */
 	private static final long serialVersionUID = 1285668703207362019L;
 	
-//	private String employeeId;
+	private String employeeId;
 	
 	private String employeeName;
 	
@@ -40,13 +40,17 @@ public class DmpEmployeeBean implements Serializable {
 	
 	private Date passTime;
 
-//	public String getEmployeeId() {
-//		return employeeId;
-//	}
-//
-//	public void setEmployeeId(String employeeId) {
-//		this.employeeId = employeeId;
-//	}
+	private String roleName;
+
+	private String channelName;
+
+	public String getEmployeeId() {
+		return employeeId;
+	}
+
+	public void setEmployeeId(String employeeId) {
+		this.employeeId = employeeId;
+	}
 
 	public String getEmployeeName() {
 		return employeeName;
@@ -159,5 +163,22 @@ public class DmpEmployeeBean implements Serializable {
 	public void setPassTime(Date passTime) {
 		this.passTime = passTime;
 	}
-	
+
+	public String getRoleName() {
+		return roleName;
+	}
+
+	public void setRoleName(String roleName) {
+		this.roleName = roleName;
+	}
+
+	public String getChannelName() {
+		return channelName;
+	}
+
+	public void setChannelName(String channelName) {
+		this.channelName = channelName;
+	}
+
+
 }

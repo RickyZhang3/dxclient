@@ -16,7 +16,13 @@ public class DmpEmployeeBeanMapper implements RowMapper<DmpEmployeeBean> {
 		dmpEmployeeBean.setAccount(rs.getString("ACCOUNT"));
 //		dmpEmployeeBean.setEmployeeId(rs.getString("EMPLOYEE_ID"));
 		dmpEmployeeBean.setPassword(rs.getString("PASSORD"));
-		
+		dmpEmployeeBean.setEmployeeName(rs.getString("employee_name"));
+		dmpEmployeeBean.setChannelName(rs.getString("channel_name"));
+		dmpEmployeeBean.setChannelId(rs.getString("channel_id"));
+		dmpEmployeeBean.setCreTime(rs.getString("cre_time"));
+		dmpEmployeeBean.setPhone(rs.getString("phone"));
+		dmpEmployeeBean.setRoleName(rs.getString("role_name"));
+		dmpEmployeeBean.setRoleId(rs.getString("role_id"));
 		return dmpEmployeeBean;
 	}
 
