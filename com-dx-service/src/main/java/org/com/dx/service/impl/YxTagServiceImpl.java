@@ -288,7 +288,7 @@ public class YxTagServiceImpl implements YxTagService {
 				.append(" t.wechat,t.company,t.demand,t.budget,t.talk_detail,t.lable_id,b.dmp_lable_name,t.remark,")
 				.append(" row_number() over(partition by t.distru_id, t.sour_phone order by t.marking_time desc) rn")
 				.append(" from dmp_marketing_detail t, dmp_feedback_info    a, dmp_source_lable     b")
-				.append(" where t.feedback_sec_id = a.feedback_id and t.lable_id = b.dmp_lable_id and t.distru_id = ?")
+				.append(" where t.feedback_sec_id = a.feedback_id and t.lable_id = b.dmp_lable_id(+) and t.distru_id = ?")
 				.append(" and t.sour_phone = ? and t.feedback_sec_id = ? ) c where rn = 1");
 
 		HisYxResultBean hisYxResultBean  = jdbcTemplate.queryForObject(stringBuffer.toString(),new Object[] {disId,sourPhone,feedbackSecId},new HisYxResultBeanMapper());
